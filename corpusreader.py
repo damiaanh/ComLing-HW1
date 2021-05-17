@@ -18,7 +18,6 @@ class CorpusReader:
         self.directory = directory
         if not os.path.isdir(self.directory):
             raise ValueError(f"{self.directory} does not exist or is not a directory.")
-        pass
 
     
     def sents(self):
