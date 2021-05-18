@@ -32,5 +32,5 @@ class CorpusReader:
         for sentence in sentlist:
             tokens = nltk.word_tokenize(sentence)
             tokenlist.append(tokens)
-        print(tokenlist)
+        return tokenlist
 
