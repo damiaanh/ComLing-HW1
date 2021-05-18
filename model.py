@@ -4,7 +4,7 @@ class BigramModel:
 
     def __init__(self, tokens):
         self.tokens = tokens
-        self.freqtable = {}
+        self.wordcount = {}
         self.cleanlist = self.clean_tokens()
 
     def clean_tokens(self):
@@ -17,10 +17,10 @@ class BigramModel:
                 token.strip(string.punctuation)
                 token.lower()
                 if token is not "":     # Only continue for tokens that are not empty (due to remove of punctuation)
-                    if token in self.freqtable:  # Count frequencies while looping over the text
-                        self.freqtable[token] += 1
+                    if token in self.freqtable:  # Count words while looping over the text
+                        self.wordcount[token] += 1
                     else:
-                        self.freqtable[token] = 1
+                        self.wordcount[token] = 1
                     cleanlist.append(token)
             cleanlist.append(endmark)
         return cleanlist
