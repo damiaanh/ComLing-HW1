@@ -1,11 +1,15 @@
 from corpusreader import CorpusReader
 from model import BigramModel
 import sys
+import os
 
 def generate(model, n):
     pass
-
-path = sys.argv[1]
+    
+if len sys.argv > 0:
+    path = sys.argv[1]
+else:
+    path = os.path.join(os.getcwd(), "train") # Define standard path if no path is given.
 
 if __name__ == '__main__':
     corpus = CorpusReader(path)
