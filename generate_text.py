@@ -13,7 +13,6 @@ else:
 
 if __name__ == '__main__':
     corpus = CorpusReader(path)
-    sentences = reader.sents()
-    mymodel = BigramModel(sentences)
+    mymodel = BigramModel(corpus.sents())
     generate(mymodel, n)
     mymodel.perplexity()
