@@ -85,8 +85,10 @@ class BigramModel:
         If so, it returns the probability for this bigram. Otherwise it returns 0. 
         """
         bigram = f"{w} {w_n}"
+        if w in self.words:
+            total = self.words[w]
         if bigram in self.bigrams:
-            p = self.bigrams[bigram] / self.totalbigrams
+            p = self.bigrams[bigram] / total
         else:
             p = 0
         return p
