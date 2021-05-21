@@ -87,6 +87,8 @@ class BigramModel:
         bigram = f"{w} {w_n}"
         if w in self.words:
             total = self.words[w]
+        else:
+            return 0
         if bigram in self.bigrams:
             p = self.bigrams[bigram] / total
         else:
@@ -94,14 +96,13 @@ class BigramModel:
         return p
     
     def p_smooth(self,w, w_n):
-
+        
         bigram = f"{w} {w_n}"
-        p_raw = self.p_raw(w, w_n)
-        aantalw_en_w_n = x[[w, w_n]] + 1
-        aantalw = BigramModel.wordsintext(w) + 1            
-        #elke count 1 bij optellen, ook wanneer iets meerdere keren voorkomt
-        chance_of_w_n = (aantalw_en_w_n / aantalw) * 100
-        return chance_of_w_n
+        if w in self.tokens and w_n in self.tokens: 
+            p = (self.bigrams[bigram] + 1) / self.totalbigrams_smooth()
+        else: 
+            p = 0 #als de woorden niet bestaan is er ook geen smooth functie
+        return p
 
     def successors(self, w):
         wi_ci_list = []
@@ -117,14 +118,15 @@ class BigramModel:
 #not be included in the result.
         
     
+
     def perplexity(self, sent):
         #er moet van sent nog tokens gemaakt worden en vervolgens van de tokens
         #sentences zoals in clean_tokens:
-        cleansent = self.clean_tokens(sent)
+        z = self.clean_tokens(sent)
         calc = 0
-        for x in cleansent:
-            calc *= 1/(self.p_smooth(cleansent[x], cleansent[x + 1]))
-        perplexity = pow(calc, (1/self.count_bigrams(sent_sentences)))
-        return perplexity
+        for x in z:
+            calc *= 1/(self.p_smooth(z[x], z[x + 1]))
+        perplxity = pow(calc, (1/self.count_bigrams_freqs(z)))
+        return perplxity
             
         #sent is een voorbeeld bigram

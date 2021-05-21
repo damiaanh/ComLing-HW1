@@ -33,14 +33,17 @@ def generate(model, n):
                     text.append(" " + newword)
                 needs_capital = False
                 word = newword
-            else:
+            elif text[-1] != ".":
                 text.append(".")
                 needs_capital = True
                 word = get_random_word(randomwords)
                 generated += 1
+            else:
+                word = get_random_word(randomwords)
+                continue
         paragraph = "".join(text)
         paragraphs += paragraph + "\n\n"
-    return paragraphs
+    print(paragraphs)
 
 def get_random_word(words):
     word = random.choice(words)
@@ -58,6 +61,5 @@ if __name__ == '__main__':
     sents = corpus.sents()
     mymodel = BigramModel(corpus.sents())
     n = 10
-    text = generate(mymodel, n)
-    print(text)
+    generate(mymodel, n)
     # mymodel.perplexity()
