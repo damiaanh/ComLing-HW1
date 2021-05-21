@@ -6,34 +6,40 @@ import random
 import operator
 
 def generate(model, n):
-    generated = 0
+    paragraphs = ""
     randomwords = list(model.bigrams.keys())
-    word = get_random_word(randomwords)
-    word.capitalize()
-    needs_capital = False
-    text = [word]
-    while generated < n:
-        successors = model.successors(word)
-        newwords = sorted(successors, key=lambda successor : successor[1], reverse=True)
-        if not newwords:
-            word = get_random_word(randomwords)
-        else:
-            choice = []
-            for word in newwords[:3]:
-                choice.append(word[0])
-            newword = get_random_word(choice)
-        if newword != "</s>":
-            if needs_capital == True:
-                newword.capitalize()
-            text.append(" " + newword)
-            needs_capital = False
-            word = newword
-        else:
-            text.append(".")
-            needs_capital = True
-            word = get_random_word(randomwords)
-            generated += 1
-    paragraphs = "".join(text)
+    
+    for x in range(2):
+        word = get_random_word(randomwords)
+        capword = word.capitalize()
+        needs_capital = False
+        text = [capword]
+        generated = 0
+        while generated < n:
+            successors = model.successors(word)
+            newwords = sorted(successors, key=lambda successor : successor[1], reverse=True)
+            if not newwords:
+                word = get_random_word(randomwords)
+            else:
+                choice = []
+                for word in newwords[:3]:
+                    choice.append(word[0])
+                newword = get_random_word(choice)
+            if newword != "</s>":
+                if needs_capital == True:
+                    new = newword.capitalize()
+                    text.append(" " + new)
+                else:
+                    text.append(" " + newword)
+                needs_capital = False
+                word = newword
+            else:
+                text.append(".")
+                needs_capital = True
+                word = get_random_word(randomwords)
+                generated += 1
+        paragraph = "".join(text)
+        paragraphs += paragraph + "\n\n"
     return paragraphs
 
 def get_random_word(words):
@@ -51,8 +57,7 @@ if __name__ == '__main__':
     corpus = CorpusReader(path)
     sents = corpus.sents()
     mymodel = BigramModel(corpus.sents())
-    n = 50
+    n = 10
     text = generate(mymodel, n)
-    input("newtext is ")
     print(text)
     # mymodel.perplexity()

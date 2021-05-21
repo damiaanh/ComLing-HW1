@@ -28,10 +28,10 @@ class BigramModel:
             cleansent = []
             cleansent.append(STARTMARK)
             for token in sentence:
-                token.strip(string.punctuation)
-                token.lower()
-                if token != "":     # Only continue for tokens that are not empty (due to removing punctuation)
-                    cleansent.append(token)
+                new = token.strip(string.punctuation)
+                new = new.lower()
+                if new != "":     # Only continue for tokens that are not empty (due to removing punctuation)
+                    cleansent.append(new)
             cleansent.append(ENDMARK)
             cleanlist.append(cleansent)
         return cleanlist
