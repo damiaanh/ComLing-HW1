@@ -3,8 +3,16 @@ import nltk
 import re
 
 class BigramModel:
+    """
+    BigramModel takes a tokenized corpus and greates bigramcount and wordcounts. It also crreates a dicionary woth all unique 
+    bigrams and words, with their frequency.
+    Authors: Binti Dekker, Damiaan Houtschild
+    """
 
     def __init__(self, tokens):
+        """
+        Creates wordlists and frequency tables for unique words and bigrams.
+        """
         self.tokens = tokens
         self.wordcount = {}
         self.tokenlist = self.clean_tokens(self.tokens)
@@ -96,7 +104,10 @@ class BigramModel:
         return p
     
     def p_smooth(self,w, w_n):
-        
+        """
+        Return P(w_n | w) , the Laplace-smoothed probability of
+        seeing token w_n if we have just seen token w.
+        """      
         bigram = f"{w} {w_n}"
         if w in self.tokens and w_n in self.tokens: 
             p = (self.bigrams[bigram] + 1) / self.totalbigrams_smooth()
@@ -105,6 +116,11 @@ class BigramModel:
         return p
 
     def successors(self, w):
+        """
+        Returns a list of pairs (w_i, c_i) , where w_i is a token that
+        might follow w , and c_i is its raw (unsmoothed) bigram
+        probability, P_r(w_i | w).
+        """
         wi_ci_list = []
         for successor in self.words:
             p = self.p_raw(w, successor)
@@ -112,21 +128,16 @@ class BigramModel:
                 wi_ci_list.append([successor, p])
         return wi_ci_list
             
-#Return a list of pairs (w_i, c_i) , where w_i is a token that
-#might follow w , and c_i is its raw (unsmoothed) bigram
-#probability, P_r(w_i | w) . Tokens with zero probability need
-#not be included in the result.
-        
-    
-
     def perplexity(self, sent):
-        #er moet van sent nog tokens gemaakt worden en vervolgens van de tokens
-        #sentences zoals in clean_tokens:
-        z = self.clean_tokens(sent)
+        sent = [sent.split()]
+        print(sent)
+        tokenlist = self.clean_tokens(sent)
         calc = 0
-        for x in z:
-            calc *= 1/(self.p_smooth(z[x], z[x + 1]))
-        perplxity = pow(calc, (1/self.count_bigrams_freqs(z)))
+        for sentence in tokenlist:
+            for token in range(len(sentence[:-1])):
+                p = self.p_smooth(sentence[token], sentence[token + 1])
+                if p != 0:
+                    calc *= 1/p
+        perplxity = pow(calc, (1/self.count_bigram_freqs(z)))
         return perplxity
-            
-        #sent is een voorbeeld bigram
+

@@ -62,4 +62,5 @@ if __name__ == '__main__':
     mymodel = BigramModel(corpus.sents())
     n = 10
     generate(mymodel, n)
-    # mymodel.perplexity()
+    testsent = "It is amazing that a family can be torn apart by something as simple as a pack of wild dogs! "
+    # mymodel.perplexity(testsent)
