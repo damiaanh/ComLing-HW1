@@ -7,7 +7,6 @@ import operator
 
 def generate(model, n):
     generated = 0
-    
     randomwords = list(model.bigrams.keys())
     word = get_random_word(randomwords)
     word.capitalize()
@@ -34,7 +33,6 @@ def generate(model, n):
             needs_capital = True
             word = get_random_word(randomwords)
             generated += 1
-        
     paragraphs = "".join(text)
     return paragraphs
 
@@ -55,5 +53,6 @@ if __name__ == '__main__':
     mymodel = BigramModel(corpus.sents())
     n = 50
     text = generate(mymodel, n)
+    input("newtext is ")
     print(text)
     # mymodel.perplexity()

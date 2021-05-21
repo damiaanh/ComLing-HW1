@@ -116,5 +116,13 @@ class BigramModel:
         
     
     def perplexity(self, sent):
-        
-        pass
+        #er moet van sent nog tokens gemaakt worden en vervolgens van de tokens
+        #sentences zoals in clean_tokens:
+        cleansent = self.clean_tokens(sent)
+        calc = 0
+        for x in cleansent:
+            calc *= 1/(self.p_smooth(cleansent[x], cleansent[x + 1]))
+        perplexity = pow(calc, (1/self.count_bigrams(sent_sentences)))
+        return perplexity
+            
+        #sent is een voorbeeld bigram
